@@ -1,27 +1,14 @@
 const mongoose = require("mongoose");
-const schema = mongoose.Schema;
-const accessory = require("./Accessory");
+const Schema = mongoose.Schema;
+const User = require("./User");
 
-const cubeSchema = new schema({
-  name: String,
-  description: String,
-  imageUrl: String,
-  difficultyLevel: Number,
-  addedAccessories: [{ type: schema.Types.ObjectId, ref: "Accessory" }],
+const articleSchema = new Schema({
+  title: String, //unique, min 5 chars, required
+  content: String, //min 20 chars, required
+  author: [{ type: Schema.Types.ObjectId, ref: "User" }], //this needs to be the ObjectId of the User
+  creationDate: Date, //default to Now
 });
 
-const Cube = mongoose.model("Cube", cubeSchema);
+const Article = mongoose.model("Article", articleSchema);
 
-module.exports = Cube;
-
-exports.newCube = function (req, res) {
-  console.log("POSTing new body of code. ", req.body);
-  const newCube = new Cube(req.body);
-  console.log(newCube);
-  newCube.save(function (err, newCube) {
-    if (err) return console.error(err);
-    console.log("Cube was saved.");
-  });
-
-  res.redirect(301, "/");
-};
+module.exports = Article;

@@ -2,6 +2,7 @@ const express = require("express");
 const url = require("url");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser");
 const articleController = require("../controllers/articleController");
 
 module.exports = (app) => {
@@ -11,11 +12,15 @@ module.exports = (app) => {
 
   app.get("/register", articleController.register);
 
+  app.post("/register", articleController.newRegister);
+
   app.get("/viewAll", articleController.viewAll);
 
   app.get("/article", articleController.bigArticle);
 
   app.get("/createArticle", articleController.createArticle);
+
+  app.post("/createArticle", articleController.createNewArticle);
 
   app.get("/editArticle", articleController.editArticle);
 

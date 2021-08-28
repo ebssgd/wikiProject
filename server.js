@@ -8,9 +8,8 @@ const mongoose = require("mongoose");
 
 mongoose
   .connect(
-    "mongodb+srv://ebssgd:Bryan5219@cluster0.vtfhi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "mongodb+srv://ebssgd:Bryan5219@cluster0.vtfhi.mongodb.net/kingslandWiki?retryWrites=true&w=majority",
     {
-      dbName: "kingslandWiki",
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }
@@ -25,3 +24,16 @@ db.once("open", function () {
 });
 
 app.listen(config.port, console.log(`Listening on port ${config.port}!`));
+
+// // Mongo DB Connection
+// mongoose.connect(process.env.DB_URI,  {
+//   dbName: process.env.DB_NAME,
+//   user: process.env.DB_USER,
+//   pass: process.env.DB_PASS,
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// })
+//   .then( (res) => console.log('db connected'))
+//   .catch((err) => console.log(err));
+
+// Check out what the heck an env file is. You need a .env file to use the above code
