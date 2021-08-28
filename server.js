@@ -6,24 +6,22 @@ require("./config/express")(app);
 require("./config/routes")(app);
 const mongoose = require("mongoose");
 
-// mongoose
-//   .connect(
-//     "mongodb+srv://cluster0.vtfhi.mongodb.net/?retryWrites=true&w=majority",
-//     {
-//       dbName: "cubeCollection",
-//       user: "ebssgd",
-//       pass: "Bryan5219",
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     }
-//   )
-//   .then((res) => console.log("Holy crap: it works!"))
-//   .catch((err) => console.log(err));
+mongoose
+  .connect(
+    "mongodb+srv://ebssgd:Bryan5219@cluster0.vtfhi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    {
+      dbName: "kingslandWiki",
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then((res) => console.log("Please, dear God, don't screw this up."))
+  .catch((err) => console.log(err));
 
-// const db = mongoose.connection;
-// db.on("error", console.error.bind(console, "connection error"));
-// db.once("open", function () {
-//   console.log("You got it!");
-// });
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "Houston, we have a problem."));
+db.once("open", function () {
+  console.log("We have liftoff!");
+});
 
 app.listen(config.port, console.log(`Listening on port ${config.port}!`));
