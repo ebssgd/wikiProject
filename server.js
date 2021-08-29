@@ -6,24 +6,34 @@ require("./config/express")(app);
 require("./config/routes")(app);
 const mongoose = require("mongoose");
 
-// mongoose
-//   .connect(
-//     "mongodb+srv://cluster0.vtfhi.mongodb.net/?retryWrites=true&w=majority",
-//     {
-//       dbName: "cubeCollection",
-//       user: "ebssgd",
-//       pass: "Bryan5219",
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     }
-//   )
-//   .then((res) => console.log("Holy crap: it works!"))
-//   .catch((err) => console.log(err));
+mongoose
+  .connect(
+    "mongodb+srv://ebssgd:Bryan5219@cluster0.vtfhi.mongodb.net/kingslandWiki?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then((res) => console.log("Please, dear God, don't screw this up."))
+  .catch((err) => console.log(err));
 
-// const db = mongoose.connection;
-// db.on("error", console.error.bind(console, "connection error"));
-// db.once("open", function () {
-//   console.log("You got it!");
-// });
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "Houston, we have a problem."));
+db.once("open", function () {
+  console.log("We have liftoff!");
+});
 
 app.listen(config.port, console.log(`Listening on port ${config.port}!`));
+
+// // Mongo DB Connection
+// mongoose.connect(process.env.DB_URI,  {
+//   dbName: process.env.DB_NAME,
+//   user: process.env.DB_USER,
+//   pass: process.env.DB_PASS,
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// })
+//   .then( (res) => console.log('db connected'))
+//   .catch((err) => console.log(err));
+
+// Check out what the heck an env file is. You need a .env file to use the above code
