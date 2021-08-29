@@ -1,7 +1,6 @@
 const express = require("express");
 const url = require("url");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+
 const bodyParser = require("body-parser");
 const articleController = require("../controllers/articleController");
 
@@ -9,6 +8,8 @@ module.exports = (app) => {
   app.get("/", articleController.homePage);
 
   app.get("/login", articleController.login);
+
+  app.post("/login", articleController.loggedIn);
 
   app.get("/register", articleController.register);
 
