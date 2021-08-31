@@ -26,7 +26,7 @@ module.exports = (app) => {
     articleController.newRegister
   );
 
-  app.get("/viewAll", articleController.viewAll);
+  app.get("/allArticles", articleController.viewAll);
 
   app.get("/article", articleController.bigArticle);
 
