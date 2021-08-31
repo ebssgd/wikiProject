@@ -25,11 +25,16 @@
       </aside>
       <div id="container">
         <header>
-          <a href="/login">Login</a>
-          <a href="/register">Register</a>
-          <span>Welcome, Bob!</span>
-          <a href="/logout">[Logout]</a>
+          {{#unless loggedIn}}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          {{/unless}}
+          {{#if loggedIn}}
+            <span>Welcome, {{username}}!</span>
+            <a href="/logout">[Logout]</a>
+          {{/if}}
         </header>
+
         <main>
           <h1>Welcome to KingUni Wiki!</h1>
           <section id="featured">
@@ -38,7 +43,7 @@
               <article>
                 <h3>{{title}}</h3>
                 <p>
-                  {{content}}&hellip;
+                  {{{firstFifty content}}}&hellip;
                 </p>
                 <div class="controls">
                   <a href="/article/{{_id}}">Read more</a>

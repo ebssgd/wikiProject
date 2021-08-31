@@ -3,10 +3,27 @@ const Article = require("../models/Article");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
+const Handlebars = require("handlebars");
 
-exports.homePage = function (req, res) {
-  res.render("index");
-  console.log("This is the home page");
+exports.homePage = async function (req, res) {
+  const articles = await Article.find().limit(3).lean();
+  //console.log("The homepage articles are ", articles);
+  let loggedIn = res.cookie.loggedIn;
+  console.log(res.cookie.loggedIn); //Showing undefined.
+  Handlebars.registerHelper("firstFifty", function (numLimit) {
+    //console.log(numLimit);
+    let contentArray = numLimit.split(" ");
+    //console.log(contentArray);
+    let finalArr = [];
+    for (i = 0; i < 50; i++) {
+      finalArr.push(contentArray[i]);
+    }
+    let theString = finalArr.join(" ");
+    return new Handlebars.SafeString(theString);
+  });
+
+  res.render("index", { articles });
+  //console.log("This is the home page");
 };
 
 exports.login = function (req, res) {
@@ -15,19 +32,20 @@ exports.login = function (req, res) {
 };
 
 exports.loggedIn = async function (req, res) {
-  console.log(req.body);
+  //console.log(req.body);
   await User.findOne({ username: req.body.username }, function (err, user) {
-    console.log("User found!!", user);
+    //console.log("User found!!", user);
     bcrypt.compare(req.body.password, user.password, function (err, result) {
-      console.log("The password result is", result);
+      //console.log("The password result is", result);
     });
     const token = jwt.sign({ id: user._id }, "Big Secret", {
       expiresIn: "12h",
     });
-    console.log(token);
+    //console.log(token);
+    console.log(res.cookie);
     res.cookie("token", token);
     res.cookie("loggedIn", true);
-  }).exec();
+  });
   res.redirect("/");
 };
 
@@ -58,14 +76,18 @@ exports.newRegister = async function (req, res) {
   });
 };
 
-exports.viewAll = function (req, res) {
-  res.render("all-articles");
-  console.log("This is the view all page");
+exports.viewAll = async function (req, res) {
+  const articles = await Article.find().lean();
+  res.render("allArticles", { articles });
+  //console.log("This is the view all page");
 };
 
 exports.bigArticle = function (req, res) {
-  res.render("article");
-  console.log("This is the article page");
+  Article.findById(req.params.id, function (err, article) {
+    if (err) return console.error(err);
+    res.render("article", { article });
+    //console.log("This is the article page");
+  }).lean();
 };
 
 exports.createArticle = function (req, res) {

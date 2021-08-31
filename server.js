@@ -4,17 +4,20 @@ const app = require("express")();
 
 require("./config/express")(app);
 require("./config/routes")(app);
+require("dotenv").config();
+
 const mongoose = require("mongoose");
 
 mongoose
-  .connect(
-    "mongodb+srv://ebssgd:Bryan5219@cluster0.vtfhi.mongodb.net/kingslandWiki?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
+  .connect(process.env.HOST_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then((res) =>
+    console.log(
+      "Deadpool: I want to die a natural death at the age of 102. Like the city of Detroit."
+    )
   )
-  .then((res) => console.log("Please, dear God, don't screw this up."))
   .catch((err) => console.log(err));
 
 const db = mongoose.connection;
