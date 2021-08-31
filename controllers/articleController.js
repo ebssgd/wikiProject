@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Article = require("../models/Article");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { check, validationResult } = require("express-validator");
 
 exports.homePage = function (req, res) {
   res.render("index");
@@ -26,7 +27,7 @@ exports.loggedIn = async function (req, res) {
     console.log(token);
     res.cookie("token", token);
     res.cookie("loggedIn", true);
-  });
+  }).exec();
   res.redirect("/");
 };
 
@@ -36,9 +37,14 @@ exports.register = function (req, res) {
 };
 
 exports.newRegister = async function (req, res) {
+  const errors = validationResult(req);
+  console.log(errors);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const salt = Math.sqrt(64);
   await bcrypt.hash(req.body.password, salt, function (err, hash) {
-    console.log("This is the hash ", hash);
+    //console.log("This is the hash ", hash);
     const newUser = new User({
       username: req.body.username,
       password: hash,
@@ -46,7 +52,7 @@ exports.newRegister = async function (req, res) {
     //console.log(newUser);
     newUser.save(function (err, newUser) {
       if (err) return console.error(err);
-      console.log("User was saved");
+      //console.log("User was saved");
       res.redirect(301, "/login");
     });
   });

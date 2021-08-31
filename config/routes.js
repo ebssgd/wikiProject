@@ -3,6 +3,8 @@ const url = require("url");
 
 const bodyParser = require("body-parser");
 const articleController = require("../controllers/articleController");
+const registerMiddle = require("../middleware/registerMiddle");
+const { body, validationResult } = require("express-validator");
 
 module.exports = (app) => {
   app.get("/", articleController.homePage);
@@ -13,7 +15,11 @@ module.exports = (app) => {
 
   app.get("/register", articleController.register);
 
-  app.post("/register", articleController.newRegister);
+  app.post(
+    "/register",
+    body("password").isLength({ min: 5 }),
+    articleController.newRegister
+  );
 
   app.get("/viewAll", articleController.viewAll);
 
