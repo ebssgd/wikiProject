@@ -46,7 +46,7 @@ module.exports = (app) => {
     articleController.createNewArticle
   );
 
-  app.get("/editArticle", articleController.editArticle);
+  app.get("/editArticle/:id", articleController.editArticle);
 
   app.get("/searchResults", articleController.searchResults);
 

@@ -4,11 +4,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
 const Handlebars = require("handlebars");
+require("dotenv").config();
 
 exports.homePage = async function (req, res) {
   const articles = await Article.find().limit(3).lean();
   //console.log("The homepage articles are ", articles);
-  let loggedIn = res.cookie.loggedIn;
+  //let loggedIn = res.cookie.loggedIn;
+  console.log(res.cookie);
+  console.log(res.cookie.token);
   console.log(res.cookie.loggedIn); //Showing undefined.
   Handlebars.registerHelper("firstFifty", function (numLimit) {
     //console.log(numLimit);
@@ -38,11 +41,10 @@ exports.loggedIn = async function (req, res) {
     bcrypt.compare(req.body.password, user.password, function (err, result) {
       //console.log("The password result is", result);
     });
-    const token = jwt.sign({ id: user._id }, "Big Secret", {
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "12h",
     });
     //console.log(token);
-    console.log(res.cookie);
     res.cookie("token", token);
     res.cookie("loggedIn", true);
   });
@@ -113,7 +115,7 @@ exports.createNewArticle = function (req, res) {
 
 exports.editArticle = function (req, res) {
   res.render("edit");
-  console.log("This is the edit article page");
+  //console.log("This is the edit article page");
 };
 
 exports.searchResults = function (req, res) {
